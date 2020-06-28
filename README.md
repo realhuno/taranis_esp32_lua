@@ -1,5 +1,10 @@
-Taranis X9D Wifi-Serial bridge
+Taranis Wifi-Serial/Sport Bridge
 
+S.Port:
+S.Port bridge for other Radios. QX7..  XLite...  with s.Port 
+Should work with all Radios with S.Port in the Modul bay or outside. 
+
+Serial:
 Only working with OPENTX 2.3.9 and the serialport LUA is activated
 You have to change the IP´s and SSID´s
 
