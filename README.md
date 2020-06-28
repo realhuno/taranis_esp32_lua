@@ -1,13 +1,16 @@
 Taranis Wifi-Serial/Sport Bridge
 
-S.Port:
+S.Port:<br>
 S.Port bridge for other Radios. QX7..  XLite...  with s.Port 
-Should work with all Radios with S.Port in the Modul bay or outside. 
-
+Should work with all Radios with S.Port in the Modul bay or outside. <br>
+Use laptmr.lua<br>
+taranis_esp32_lua_sport.ino
+<br><br>
 Serial:
 Only working with OPENTX 2.3.9 and the serialport LUA is activated
-You have to change the IP´s and SSID´s
-
+You have to change the IP´s and SSID´s<br>
+use chorus.lua<br>
+taranis_esp32_lua.ino<br><br>
 TCP Connection with Chrorus32 on Port 9000
 MQTT Connection with Rotorhazard
 TODO Change IP´s and SSID ... Cleanup 
