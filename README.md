@@ -1,4 +1,4 @@
-<h1<FRSKY Wifi Serial/Sport Bridge</h1>
+<h1>FRSKY Wifi Serial/Sport Bridge</h1>
 
 S.Port:<br>
 S.Port bridge for other Radios. QX7..  XLite...  with s.Port 
