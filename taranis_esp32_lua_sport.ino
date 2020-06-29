@@ -21,8 +21,10 @@
  #include <PubSubClient.h>
 SPortHub hub(0x12, 4);                                //Hardware ID 0x12, Software serial pin 3
 SimpleSPortSensor sensor(0x1AEB);                     //Sensor with ID 0x5900
+SimpleSPortSensor sensor2(0x1AEF);                     //Sensor with ID 0x5900
 int counter=0;
 int laptime=2000;
+int ip4sport=0;
 WebServer server(80);
 
 
@@ -233,12 +235,12 @@ void callback(char* topic, byte* message, unsigned int length) {             //M
      global=global+"seconds"+seconds+"<br>";
      global=global+"summery"+sum+"<br>";
      global=global+"<br>";
-     
+     laptime=sum;
      if(sum>0 && lap!=97 && lap!=84){                                                //Only send positiv values
      String stringtwo =  String(sum, HEX); 
      lap=lap-48;
     
-
+     
      String stringlap = String(lap, DEC); 
      Serial.println("S1L0"+stringlap+"""000"+stringtwo);
      global=global+"S1L0"+stringlap+"""000"+stringtwo+"<br>";
@@ -452,6 +454,8 @@ void handleLED() {
  Serial.println(t_state);
  //Serial.println(t_state);
 
+ int timems=server.arg("LEDstate").toInt();
+laptime=timems;
  global=global+t_state+"<br>";
  server.send(200, "text/plane", t_state); //Send web page
 }
@@ -500,10 +504,14 @@ void chorus_connect() {
 void handleCommand(int prim, int applicationId, int value) {
   hub.sendCommand(0x32, applicationId, value + 1);    //Send a command back to lua, with 0x32 as reply and the value + 1
 }
+
+
+
 void setup() {
     hub.commandId = 0x1B;                               //Listen to data send to thist physical ID
   hub.commandReceived = handleCommand;                //Function to handle received commands
   hub.registerSensor(sensor);                         //Add sensor to the hub
+  hub.registerSensor(sensor2);                         //Add sensor to the hub
   hub.begin();                                        //Start listening
   //hub.registerSensor(sensor);       //Add sensor to the hub
   //hub.begin();                      //Start listening
@@ -529,7 +537,11 @@ void setup() {
         Serial.println("IP address: ");
     MDNS.begin("radio0");
         Serial.println(WiFi.localIP());
-      
+        String ip4sportstr;
+        ip4sportstr=WiFi.localIP().toString();
+        ip4sportstr.trim();
+        ip4sportstr.replace(".", ""); //replace % with space
+        ip4sport=ip4sportstr.toInt();
     }
   
 
@@ -567,7 +579,7 @@ void loop() {
   real_rssi=WiFi.RSSI();
   server.handleClient();
   sensor.value = laptime;                                //Set the sensor value
-
+  sensor2.value = ip4sport;                                //Set the sensor value
   
   hub.handle();                                       //Handle new data
   counter++;
