@@ -1,4 +1,4 @@
-Taranis Wifi-Serial/Sport Bridge
+<h1<FRSKY Wifi Serial/Sport Bridge</h1>
 
 S.Port:<br>
 S.Port bridge for other Radios. QX7..  XLite...  with s.Port 
@@ -7,6 +7,7 @@ Should work with all Radios with S.Port in the Modul bay or outside. <br>
 <br><br>
 Serial:
 Only working with OPENTX 2.3.9 and the serialport LUA is activated
+
 
 
 TCP Connection with Chrorus32 on Port 9000
