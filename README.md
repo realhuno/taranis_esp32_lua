@@ -5,7 +5,19 @@ S.Port bridge should work with all Radios with S.Port in the Modul bay or outsid
 Serial:
 Only working with UARTS and OPENTX 2.3.9 and the serialport LUA is activated
 
+<h1>Config</h1>
+change ssid, pw and ip´s (mqttserver/tcp server)
+#define WIFI_AP_NAME1 "Chorus32 LapTimer"      //Dont´t change... reserved for Chorus32 connection
+#define WIFI_AP_NAME2 "Laptimer"               //my laptimer ssid on the field
+#define WIFI_AP_NAME3 "A1-7FB051"              //my dev ssid
 
+#define WIFI_AP_PASSWORD1 ""                   //Chorus32 Laptimer password
+#define WIFI_AP_PASSWORD2 "laptimer"           //you know ... your password
+#define WIFI_AP_PASSWORD3 "blablabla"          //you know ... your password
+
+#define MQTTSERVER1 "192.168.4.1"           //MQTT or TCP Client for Chorus32 Port 9000
+#define MQTTSERVER2 "192.168.0.141"         //field mqtt server
+#define MQTTSERVER3 "10.0.0.50"             //home mqtt server
 
 TCP Connection with Chrorus32 on Port 9000
 MQTT Connection with Rotorhazard
