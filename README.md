@@ -19,6 +19,8 @@ change ssid, pw and ip´s (mqttserver/tcp server)<br>
 #define MQTTSERVER2 "192.168.0.141"         //field mqtt server<br>
 #define MQTTSERVER3 "10.0.0.50"             //home mqtt server<br><br>
 
+copy sounds in the zip file to /SCRIPTS/SOUNDS/LapTmr/<br><br>
+copy lua´s to /SCRIPTS/TELEMETRY/<br>
 TCP Connection with Chrorus32 on Port 9000
 MQTT Connection with Rotorhazard
 TODO Change IP´s and SSID ... Cleanup 
