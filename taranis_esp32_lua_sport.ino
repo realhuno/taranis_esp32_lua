@@ -43,7 +43,7 @@ WebServer server(80);
 
 #define WIFI_AP_PASSWORD1 ""                   //Chorus32 Laptimer password
 #define WIFI_AP_PASSWORD2 "laptimer"           //you know ... your password
-#define WIFI_AP_PASSWORD3 "hainz2015"          //you know ... your password
+#define WIFI_AP_PASSWORD3 "blablabla"          //you know ... your password
 
 #define MQTTSERVER1 "192.168.4.1"           //MQTT or TCP Client for Chorus32 Port 9000
 #define MQTTSERVER2 "192.168.0.141"
