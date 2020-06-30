@@ -3,7 +3,8 @@
 S.Port bridge should work with all Radios with S.Port in the Modul bay or outside. <br>
 
 Serial:
-Only working with UARTS and OPENTX 2.3.9 and the serialport LUA is activated
+Only working with UARTS and OPENTX 2.3.9 and the serialport LUA is activated<br><br>
+working trackers: <b>chorus32 and RotorHazard</b><br>
 
 <h1>Config</h1>
 change ssid, pw and ip´s (mqttserver/tcp server)<br>
