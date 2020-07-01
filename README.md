@@ -40,7 +40,7 @@ change ip´s ssid´s in the CODE!
 Use laptmr.lua<br>
 taranis_esp32_lua_sport.ino<br>
 setup config and wire up the esp32<br>
-add logical switch ls1 see photos..<br>
+add logical switch ls1 see photos..<br>(if you using the lua script) 
 discovery telemetry sensors!! 1AEB appers on the lcd screen! this is always the laptime in seconds<br>
 <img src=https://github.com/realhuno/taranis_esp32_lua/blob/master/sport.jpg width=50% height=50%>
 <img src=https://github.com/realhuno/taranis_esp32_lua/blob/master/laps.jpg width=50% height=50%>
