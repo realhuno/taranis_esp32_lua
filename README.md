@@ -4,7 +4,13 @@ S.Port bridge should work with all Radios with S.Port in the Modul bay or outsid
 
 Serial:
 Only working with UARTS and OPENTX 2.3.9 and the serialport LUA is activated<br><br>
-working trackers: <b>chorus32 and RotorHazard</b><br>
+
+working trackers: <b>Chorus32 and RotorHazard</b><br>
+known problems (only sport method)<br>
+if wifi not connecting (reboot loop) plug in sport cable after the wifi connection is connected<br>
+please use char "L" as rank and lap prefix in the vrx config!<br>
+setup the vrx setup in RotorHazard and install mqtt server!!<br>
+
 
 <h1>Config</h1>
 change ssid, pw and ip´s (mqttserver/tcp server)<br>
