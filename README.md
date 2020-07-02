@@ -29,8 +29,11 @@ change ssid, pw and ip´s (mqttserver/tcp server)<br>
 copy sounds in the zip file to /SCRIPTS/SOUNDS/LapTmr/<br><br>
 copy lua´s to /SCRIPTS/TELEMETRY/<br>
 TCP Connection with Chrorus32 on Port 9000
-MQTT Connection with Rotorhazard
-TODO Change IP´s and SSID ... Cleanup 
+MQTT Connection with Rotorhazard<br><br>
+<h1>Lua Scripts</h1>
+for sport and big or color screens use LapTmrColor.lua (untested)<br>
+for sport and x9d or xlite use LapTmr.lua (tested)<br>
+for serial Chorus.lua (tested)<br><br>
 <h1>Serial method</h1>
 use chorus.lua<br>
 taranis_esp32_lua.ino<br><br>
