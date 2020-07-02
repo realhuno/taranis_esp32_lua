@@ -34,7 +34,7 @@ MQTT Connection with Rotorhazard<br><br>
 for sport and big or color screens use LapTmrColor.lua (untested)<br>
 for sport and x9d or xlite use LapTmr.lua (tested)<br>
 for serial Chorus.lua (tested)<br><br>
-<img src=https://github.com/realhuno/taranis_esp32_lua/blob/master/schematic.png width=50% height=50%><br>
+<img src=https://github.com/realhuno/taranis_esp32_lua/blob/master/colorscreen.jpg width=50% height=50%><br>
 Example -> LapTmrColor.lua<br>
 <h1>Serial method</h1>
 use chorus.lua<br>
