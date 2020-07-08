@@ -22,9 +22,23 @@
 
 WebServer server(80);
 
+//--------------CONFIGURATION
 
+// 
+//WIFIMULTI Handle the WIFI Stuff....!! 
+//MQTT and Chorus Client use same server IP
 
-#define WIFI_AP_NAME "Chorus32 LapTimer"
+#define WIFI_AP_NAME1 "Chorus32 LapTimer"      //Dont´t change... reserved for Chorus32 connection
+#define WIFI_AP_NAME2 "Laptimer"               //my laptimer ssid on the field
+#define WIFI_AP_NAME3 "A1-7FB051"              //my dev ssid
+
+#define WIFI_AP_PASSWORD1 ""                   //Chorus32 Laptimer password
+#define WIFI_AP_PASSWORD2 "laptimer"           //you know ... your password
+#define WIFI_AP_PASSWORD3 "blablabla"          //you know ... your password
+
+#define MQTTSERVER1 "192.168.4.1"           //MQTT or TCP Client for Chorus32 Port 9000
+#define MQTTSERVER2 "192.168.0.141"
+#define MQTTSERVER3 "10.0.0.50"
 
 #define UART_TX 15
 #define UART_RX 4    //4 normal esp32         14 esp32-cam
@@ -319,20 +333,20 @@ boolean reconnect() {                                       //MQTT Connect and R
     mqttserver=ipa;
    }else{
 
-        if(WiFi.SSID()=="Chorus32 LapTimer"){
-    mqttserver="192.168.4.1";
-        global=global+"try mqttconnect to 192.168.4.1<br>";
+    if(WiFi.SSID()==WIFI_AP_NAME1){
+    mqttserver=MQTTSERVER1;
+    global=global+"try mqttconnect<br>";
     }
 
 
-    if(WiFi.SSID()=="Laptimer"){
-    mqttserver="192.168.0.141";
-    global=global+"try mqttconnect to 192.168.0.141<br>";
+    if(WiFi.SSID()==WIFI_AP_NAME2){
+    mqttserver=MQTTSERVER2;
+    global=global+"try mqttconnect<br>";
     }
 
-    if(WiFi.SSID()=="A1-7FB051"){
-    mqttserver="10.0.0.50";
-        global=global+"try mqttconnect to 10.0.0.50<br>";
+    if(WiFi.SSID()==WIFI_AP_NAME3){
+    mqttserver=MQTTSERVER3;
+    global=global+"try mqttconnect<br>";
 
     }
 
@@ -466,22 +480,22 @@ void chorus_connect() {
   if(WiFi.isConnected()) {
         
 
-    if(WiFi.SSID()=="Chorus32 LapTimer"){
-           if(client.connect("192.168.4.1", 9000)) {
-      //Serial.println("Connected to chorus via tcp 192.168.4.1");
+    if(WiFi.SSID()==WIFI_AP_NAME1){
+    if(client.connect(MQTTSERVER1, 9000)) {
+    //Serial.println("Connected to chorus via tcp 192.168.4.1");
     }
     }
 
 
-    if(WiFi.SSID()=="Laptimer"){
-           if(client.connect("192.168.0.141", 9000)) {
-      //Serial.println("Connected to chorus via tcp 192.168.0.141");
+    if(WiFi.SSID()==WIFI_AP_NAME2){
+    if(client.connect(MQTTSERVER2, 9000)) {
+    //Serial.println("Connected to chorus via tcp 192.168.0.141");
     }
     }
 
-    if(WiFi.SSID()=="A1-7FB051"){
-           if(client.connect("10.0.0.50", 9000)) {
-      //Serial.println("Connected to chorus via tcp 10.0.0.50");
+    if(WiFi.SSID()==WIFI_AP_NAME3){
+    if(client.connect(MQTTSERVER3, 9000)) {
+    //Serial.println("Connected to chorus via tcp 10.0.0.50");
     }
     }
 
@@ -497,15 +511,15 @@ void setup() {
   mqttid=EEPROM.read(0);
 
 
-      Serial.begin(115200, SERIAL_8N1, 3, 1, true);                   //ESP32
-  //Serial.begin(115200, SERIAL_8N1, UART_RX, UART_TX, true);   //ESP32-CAM
+  //    Serial.begin(115200, SERIAL_8N1, 3, 1, true);                   //ESP32
+  Serial.begin(115200, SERIAL_8N1, UART_RX, UART_TX, true);   //ESP32-CAM
   //WiFi.begin(WIFI_AP_NAME);
    
   
 
-    wifiMulti.addAP("Chorus32 LapTimer", "");
-    wifiMulti.addAP("Laptimer", "laptimer");
-    wifiMulti.addAP("A1-7FB051", "hainz2015");
+    wifiMulti.addAP(WIFI_AP_NAME1, WIFI_AP_PASSWORD1);
+    wifiMulti.addAP(WIFI_AP_NAME2, WIFI_AP_PASSWORD2);
+    wifiMulti.addAP(WIFI_AP_NAME3, WIFI_AP_PASSWORD3);
 
     //Serial.println("Connecting Wifi...");
     if(wifiMulti.run() == WL_CONNECTED) {
@@ -640,8 +654,8 @@ if (!client2.connected() && mqtt==1) {
 
 
         if(WiFi.SSID()=="Chorus32 LapTimer"){
-    mqttserver="192.168.4.1";
-        global=global+"try mqttconnect to 192.168.4.1<br>";
+    mqttserver=MQTTSERVER1;
+    global=global+"try chorus connect to 192.168.4.1<br>";
 
 
           if(!client.connected()) {
