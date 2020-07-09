@@ -41,6 +41,23 @@ protocol = assert(getProtocol(), "Telemetry protocol not supported!")
 assert(loadScript(protocol.transport))()
 assert(loadScript(SCRIPT_HOME.."/MSP/common.lua"))()
 
+
+
+-- Audio
+--local SpeakLapNumber = true
+local SpeakLapTime = true
+
+local SpeakLapNumber = true
+local SpeakLapTimeHours = 0 -- 1 hours, minutes, seconds else minutes, seconds
+
+local BeepOnLap = true
+local BeepFrequency = 200 -- Hz
+local BeemLengthMiliseconds = 200
+-- File Paths
+-- location you placed the accompanying sound files
+local SoundFilesPath = "/SCRIPTS/TELEMETRY/LapTmr/"
+
+
 local MSP_ADD_LAP = 11
 
 local current_screen = 1
@@ -427,6 +444,24 @@ local function process_cmd(cmd)
 			local lap = tonumber(string.sub(cmd, 4, 5), 16)
             -- ADD NEW LAP FOR OTHER SCREEN
 			LapTimeList[#LapTimeList+1] = getMinutesSecondsHundrethsAsString(new_time)
+			playTone(BeepFrequency,BeemLengthMiliseconds,0)
+            if (#LapTimeList-1) <= 16 then
+            local filePathName = SoundFilesPath..tostring(#LapTimeList-1)..".wav"
+            playFile(filePathName)
+            end
+          -- playNumber(#LapTimeList-1,0)
+          --if (#LapTimeList-1) == 1 then
+          --playFile(SoundFilesPath.."laps.wav")
+          ---else
+          --playFile(SoundFilesPath.."lap.wav")
+          --end
+          --local LapTimeInt = math.floor((LapTime/10)+0.5)
+		    local LapTimeInt = math.floor((new_time/1000)+0.5)
+
+             playDuration(LapTimeInt, SpeakLapTimeHours)
+			
+			
+			
 			
 			if lap < 5 and lap > 0 then -- just limit the number of laps for now
 				laps_int[node + 1][lap] = new_time
