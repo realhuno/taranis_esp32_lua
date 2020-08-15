@@ -82,6 +82,7 @@ local CHORUS_CMD_CHANNEL = 12
 local CHORUS_CMD_ACTIVE = 13
 local CHORUS_CMD_THRESHOLD = 14
 local chorus_cmds = {}
+local debuglist={}
 
 chorus_cmds[CHORUS_CMD_NUM_RX] =  { cmd="ER*M", bits=4, last_val=nil }
 chorus_cmds[CHORUS_CMD_ADC_TYPE] =  { cmd="ER*v", bits=4, last_val=nil }
@@ -206,29 +207,51 @@ end
 
 local function draw_header(title)
 
-	local conn_status = "disconnected"
-	if tonumber(connection_status) == 1 then
-		conn_status = "connected"
-	end
+	--local conn_status = "disconnected"
+	--if tonumber(connection_status) == 1 then
+	--	conn_status = "connected"
+	--end
 	--lcd.drawScreenTitle(title, current_screen, #pages)
-	lcd.drawText(120, 0, conn_status, INVERS)
+	--lcd.drawText(120, 0, conn_status, INVERS)
+	lcd.drawText(20, 0, title, INVERS)
 end
 
 local function draw_debug_screen()
 	
-	lcd.drawText(10, 20, "WiFi status:", 0)
-	lcd.drawText(160, 20, wifi_status,0)
-	lcd.drawText(200, 20, ms_to_string(last_lap_int),0)
-	lcd.drawText(300, 20, "RSSI:",0)
-	lcd.drawText(360, 20, wifi_rssi,0)
-	--lcd.drawText(400, 20, "IP:",0)
-	--lcd.drawText(450, 20, wifi_ip,0)
-	--lcd.drawText(10, 40, "Connection status:", 0)
-	--lcd.drawText(400, 40, connection_status,0)
-	lcd.drawText(10, 60, "Last rx: ",0)
-	lcd.drawText(40, 60, last_cmd,0)
-	lcd.drawText(10, 80, msp_string,0)
-	lcd.drawText(10, 100, debug_string,0)
+  local TextSize = 0
+  TextSize = MIDSIZE
+  local TextHeight = 20 
+  draw_header("Debug:")
+  local x = 10   
+
+  local rowHeight = math.floor(TextHeight + 8) --12
+  local rows = math.floor(LCD_H/rowHeight) 
+  local rowsMod=rows*rowHeight 
+
+  x = 0
+  local y = rowHeight
+  local c = 1
+  lcd.drawText(x,rowHeight," ")
+  -- i = 2 first entry is always 0:00.00 so skippind it
+  for i = #debuglist, 1, -1 do
+ if y == 224 then
+ y=rowHeight
+ x=0
+ c=1
+lcd.clear()
+end 
+ 
+    if y %  (rowsMod or 60) == 0 then
+      c = c + 300-- next column
+      x = 150
+      y = rowHeight
+    end
+    if (c > 1) and x > LCD_W - x/(c-1) then
+    else
+      lcd.drawText( x, y, debuglist[i],TextSize)
+    end
+    y = y + rowHeight
+  end
 end
 
 local function draw_race_screen()
@@ -237,27 +260,30 @@ local function draw_race_screen()
 		chorus_get_value(CHORUS_CMD_RACE_MODE)
 		race_status = "--"
 	end
-	draw_header("Racing Status: " .. tostring(race_status))
-	local textopt = SMLSIZE;
+	draw_header("Racing Status:")
+	--draw_header("Racing Status: " .. tostring(race_status))
+	
+	local textopt = MIDSIZE;
 	local y_offset = 15
-	linespacing = (128 - y_offset)/6
+	linespacing = (128 - y_offset)/4
 	y = y_offset
 	x = 0
-	lcd.drawText(x+2, y+2, "Laps", textopt)
-	for i=1,5 do
+	--lcd.drawText(x+20, y+20, "Laps", textopt)
+	for i=1,8 do
 		--lcd.drawLine(0, inc_y(linespacing), 212, y, SOLID, 0)
 		inc_y(linespacing)
 			lcd.drawText(x+2, y+2, "Pilot " .. i, textopt)
 	end
-	local x_spacing = 212/5
-	x = 0
+	local x_spacing = 80
+	x = 50
 	y = y_offset
-	for i=1,4 do
+	for i=1,3 do
 		--lcd.drawLine(inc_x(x_spacing), y_offset, x, 64, SOLID, 0)
-		inc_x(x_spacing)
-		lcd.drawText(x+x_spacing/2 - 4, y+2, i, textopt)
+		inc_x(x_spacing+20)
+		lcd.drawText(x+x_spacing/2 - 8, y+2, i, textopt)
 	end
-
+    x_spacing=100
+	y_offset = -15
 	for i=1,#laps_int do
 		for j=1, #(laps_int[i]) do
 			if laps_int[i][j] ~= 0 then
@@ -303,7 +329,7 @@ local function draw_lap_screen()
   --lcd.drawText( x, 0, #LapTimeList-1, TextSize)
   --x = lcd.getLastPos() + 4
   --lcd.drawText( x, 0, getMinutesSecondsHundrethsAsString(ElapsedTimeMiliseconds), TextSize)
-  draw_header("LapList:")
+  draw_header("Lap List:")
   local rowHeight = math.floor(TextHeight + 8) --12
   local rows = math.floor(LCD_H/rowHeight) 
   local rowsMod=rows*rowHeight 
@@ -314,6 +340,16 @@ local function draw_lap_screen()
   lcd.drawText(x,rowHeight," ")
   -- i = 2 first entry is always 0:00.00 so skippind it
   for i = #LapTimeList, 2, -1 do
+ if y == 224 and x==150 then
+ y=rowHeight
+ x=0
+ c=1
+ lcd.clear()
+
+
+
+end 
+ 
     if y %  (rowsMod or 60) == 0 then
       c = c + 300-- next column
       x = 150
@@ -331,7 +367,8 @@ end
 local race_page = {custom_draw_func=draw_race_screen}
 local lap_page = {custom_draw_func=draw_lap_screen}
 local debug_page = { custom_draw_func=draw_debug_screen }
-pages = {race_page, debug_page, settings_page, rx_page,lap_page}
+
+pages = {race_page, debug_page, lap_page}
 
 local last_chorus_update = 0
 
@@ -415,6 +452,13 @@ end
 
 local function process_cmd(cmd)
 	local type = string.sub(cmd, 1,1)
+    
+	if #debuglist >7 then
+      for i = 1, #debuglist do debuglist[i]=nil end
+    end
+	if #LapTimeList >14 then
+      for i = 1, #LapTimeList do LapTimeList[i]=nil end
+    end
 
 	if (type == "E") then
 		process_extended_cmd(string.sub(cmd, 2))
@@ -558,6 +602,9 @@ local function handle_input(event)
 	if(event == EVT_ENTER_BREAK) then
 		is_editing = not is_editing
 	end
+	
+	
+	
 	if is_editing then
 		handle_input_edit(event)
 	elseif(event == EVT_VIRTUAL_NEXT_PAGE) then
@@ -566,7 +613,9 @@ local function handle_input(event)
 		if current_screen > #(pages) then
 			current_screen = 1
 		end
-	elseif pages[current_screen].fields ~= nil then
+		
+	
+	    elseif pages[current_screen].fields ~= nil then
 		if(event == EVT_MINUS_BREAK) then
 			current_item = current_item + 1
 			if(current_item > #(pages[current_screen].fields)) then
@@ -594,16 +643,30 @@ local function run_bg()
 end
 
 local run = function (event)
+  lcd.setColor(CUSTOM_COLOR, 0x0AB1) -- hex 0x084c7b -- 073f66
+  lcd.clear(CUSTOM_COLOR)
 	handle_input(event)
 	draw_ui()
 --	if type(serialReadLine) ~= "nil" then
 --		local rx = serialReadLine()
 --	end
 	local rx = serialRead()
+	
+	if(event == EVT_VIRTUAL_MENU) then
+		local rxsim="S1L01000".. math.random(7000,8000)
+	process_cmd(rxsim)
+		    debuglist[#debuglist+1]=rxsim
+	        
+		
+		 --lcd.drawText(0, 0, 0, "")
+	end
+
+	
 	if(rx ~= nil and string.len(rx) > 0) then
 	
 	--if(rx ~= nil) then
 		last_cmd = rx
+		debuglist[#debuglist+1]=rx
 		process_cmd(last_cmd)
 	end
 
